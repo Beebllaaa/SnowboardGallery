@@ -340,3 +340,21 @@ body::before {
 body {
     background-color: #111 !important;
 }
+
+
+/* 修复手机端上下红色背景 */
+@media screen and (max-width: 768px) {
+
+    html,
+    body {
+        background: #111 !important;
+        min-height: 100%;
+    }
+
+    body::before {
+        position: fixed;
+        inset: -50px;
+        background-size: cover;
+        background-position: center;
+    }
+}
