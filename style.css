@@ -1,15 +1,45 @@
 
 /* =========================
-   1. 页面基础设置
-========================= */
+   GLOBAL
+   ========================= */
 
+* {
+    box-sizing: border-box;
+}
+
+html,
 body {
     margin: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+}
+
+body {
     background: #111;
     overflow: hidden;
 }
+
+/* 模糊背景图片 */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background-image: url("videos/backimage.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    filter: blur(8px) brightness(0.7);
+    transform: scale(1.05);
+
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* =========================
+   GALLERY
+   ========================= */
 
 .gallery {
     position: relative;
@@ -17,25 +47,23 @@ body {
     height: 100%;
 }
 
-
 /* =========================
-   2. 卡片基础样式
-========================= */
+   POLAROID CARD
+   ========================= */
 
-
-/* 拍立得卡片 */
 .card {
     position: absolute;
-    width: 160px;
 
-    /* 上、左右窄，底部宽 */
-    padding: 10px 10px 40px 10px;
+    width: 160px;
+    padding: 7px 7px 35px 7px;
 
     background: #fdfcf8;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
 
-    box-sizing: content-box;
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.4),
+        0 20px 50px rgba(0, 0, 0, 0.3);
 
     transition:
         width 0.8s cubic-bezier(0.22, 1, 0.36, 1),
@@ -43,34 +71,25 @@ body {
         left 0.8s cubic-bezier(0.22, 1, 0.36, 1),
         transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
         opacity 0.6s ease,
-        filter 0.6s ease;
-
-        
-box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.4),
-    0 20px 50px rgba(0, 0, 0, 0.3);
-
+        filter 0.6s ease,
+        box-shadow 0.6s ease;
 }
-
-/* 视频封面固定为 4:3 */
 
 .card video {
     display: block;
     width: 100%;
-
     aspect-ratio: 3 / 4;
     height: auto;
 
     object-fit: cover;
+    border-radius: 7px;
+
     pointer-events: none;
 }
 
-
-
-
 /* =========================
-   4. 12 张卡片的位置、大小和动画
-========================= */
+   DESKTOP POSITIONS
+   ========================= */
 
 .card1 {
     width: 190px;
@@ -102,7 +121,7 @@ box-shadow:
 
 .card5 {
     width: 210px;
-    top: 12%;
+    top: 33%;
     left: 48%;
     animation: floatUpDown 5.5s ease-in-out infinite;
 }
@@ -117,12 +136,12 @@ box-shadow:
 .card7 {
     width: 160px;
     top: 53%;
-    left: 3%;
+    left: 5%;
     animation: floatDiagonal 6.5s ease-in-out infinite;
 }
 
 .card8 {
-    width: 160px;
+    width: 120px;
     top: 55%;
     left: 35%;
     animation: floatUpDown 9s ease-in-out infinite reverse;
@@ -145,7 +164,7 @@ box-shadow:
 .card11 {
     width: 160px;
     top: 63%;
-    left: 58%;
+    left: 50%;
     animation: floatDiagonal 8s ease-in-out infinite reverse;
 }
 
@@ -156,12 +175,10 @@ box-shadow:
     animation: floatLeftRight 6s ease-in-out infinite reverse;
 }
 
-
 /* =========================
-   5. 漂浮动画
-========================= */
+   FLOATING ANIMATIONS
+   ========================= */
 
-/* 上下漂浮 */
 @keyframes floatUpDown {
     0%, 100% {
         transform: translate(0, 0);
@@ -172,7 +189,6 @@ box-shadow:
     }
 }
 
-/* 左右漂浮 */
 @keyframes floatLeftRight {
     0%, 100% {
         transform: translate(0, 0);
@@ -183,7 +199,6 @@ box-shadow:
     }
 }
 
-/* 斜向漂浮 */
 @keyframes floatDiagonal {
     0%, 100% {
         transform: translate(0, 0);
@@ -194,12 +209,9 @@ box-shadow:
     }
 }
 
-
 /* =========================
-   6. 点击后居中放大
-========================= */
-
-
+   EXPANDED CARD
+   ========================= */
 
 .card.expanded {
     position: fixed;
@@ -210,53 +222,117 @@ box-shadow:
     left: 50%;
 
     transform: translate(-50%, -50%);
-
     animation: none !important;
+
     z-index: 100;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.6),
+        0 40px 100px rgba(0, 0, 0, 0.4);
 }
 
-
-
-/* 所有卡片的透明度和模糊过渡 */
-.card {
-    transition:
-        width 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-        top 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-        left 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.6s ease,
-        filter 0.6s ease;
-}
-
-/* 打开视频时，其他卡片变暗变模糊 */
+/* 其他卡片变暗和模糊 */
 .gallery.has-active .card:not(.expanded) {
     opacity: 0.25;
     filter: blur(4px);
 }
 
-/* 被选中的卡片保持清晰 */
 .gallery.has-active .card.expanded {
     opacity: 1;
     filter: blur(0);
 }
 
+/* =========================
+   MOBILE CARD STACK
+   ========================= */
 
-/* 背景图片 */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
+@media screen and (max-width: 768px) {
 
-    background-image: url("videos/backimage.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    body {
+        width: 100%;
+        height: 100dvh;
+        overflow: hidden;
+    }
 
-    /* 模糊效果 */
-    filter: blur(8px)  brightness(0.7);
+    .gallery {
+        position: relative;
+        width: 100%;
+        height: 100dvh;
+        overflow: hidden;
+    }
 
-    /* 防止模糊后边缘出现空白 */
-    transform: scale(1.05);
+    /* 所有卡片叠在屏幕中央 */
+    .card {
+        position: absolute !important;
 
-    z-index: -1;
+        width: min(65vw, 260px) !important;
+
+        top: 50% !important;
+        left: 50% !important;
+
+        animation: none !important;
+
+        transform: translate(-50%, -50%);
+
+        touch-action: none;
+        user-select: none;
+
+        transition:
+            transform 0.4s ease,
+            opacity 0.4s ease,
+            filter 0.4s ease;
+    }
+
+    /* 扑克牌式旋转 */
+    .card:nth-child(3n + 1) {
+        transform: translate(-50%, -50%) rotate(-6deg);
+    }
+
+    .card:nth-child(3n + 2) {
+        transform: translate(-50%, -50%) rotate(5deg);
+    }
+
+    .card:nth-child(3n) {
+        transform: translate(-50%, -50%) rotate(-2deg);
+    }
+
+    .card:last-child {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    /* 手指拖动 */
+    .card.swiping {
+        transition: none !important;
+    }
+
+    /* 卡片飞出 */
+    .card.swipe-away {
+        transition:
+            transform 0.4s ease,
+            opacity 0.4s ease !important;
+
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    /* 手机端放大播放 */
+    .card.expanded {
+        position: fixed !important;
+
+        width: min(80vw, 360px) !important;
+
+        top: 50% !important;
+        left: 50% !important;
+
+        transform: translate(-50%, -50%) rotate(0deg) !important;
+
+        z-index: 100 !important;
+    }
+
+    /* 放大时其他卡片变暗 */
+    .gallery.has-active .card:not(.expanded) {
+        opacity: 0.15;
+        filter: blur(5px);
+        pointer-events: none;
+    }
 }
