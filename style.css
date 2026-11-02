@@ -337,3 +337,6 @@ body::before {
     }
 }
 
+body {
+    background-color: #111 !important;
+}
