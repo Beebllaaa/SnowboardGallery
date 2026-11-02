@@ -337,16 +337,3 @@ body::before {
     }
 }
 
-
-/* TEST: MOBILE LAYOUT */
-@media screen and (max-width: 768px) {
-    body {
-        background: red !important;
-    }
-
-    .card {
-        top: 50% !important;
-        left: 50% !important;
-        width: 180px !important;
-    }
-}
